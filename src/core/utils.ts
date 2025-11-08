@@ -9,7 +9,7 @@ export function getDecade(year?: number | null): string | null {
 }
 
 // Simple function to mask the title of a movie
-export function mastTitle(title: string, text: string): string {
+export function maskTitle(title: string, text: string): string {
     // Replacing every case-insensitive word with underscores of the same length
     let masked = text;
     const words = title.split(/\s+/).filter(Boolean);
