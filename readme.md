@@ -1,7 +1,7 @@
 # Overview
 - This is a fun terminal/console based game that gives the users clues to guess the name of a movie based on user given filters like genre, year, etc. This was made using TypeScript and    interacts with the TMDB API. Since the TMDB API has some strict typing I decided to use TypeScript as opposed to JavaScript This allowed for using types for the Movies and Filters as well as the use of interfaces for some functions. I wanted to create this because I have seen many videos of people playing clue-based guessing games and I wanted to create my own. 
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/LZaLVFeFqlk)
 
 # Development Environment
 
