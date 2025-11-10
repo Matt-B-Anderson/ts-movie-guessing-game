@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "@jest/globals";
 import { generateClues } from "../src/core/clueGenerator.ts";
 import type { Movie } from "../src/core/types.ts";
 

@@ -1,9 +1,8 @@
 import inquirer from "inquirer";
 import chalk from "chalk";
-import { fetchRandomMovie } from "./api/tmdb.js";
-import type { UserFilters } from "./core/types.js";
-import { generateClues } from "./core/clueGenerator.js";
-import { sleep } from "./core/utils.js";
+import { fetchRandomMovie } from "./api/tmdb.ts";
+import type { UserFilters, Guess } from "./core/types.ts";
+import { GameSession } from "./core/GameSession.ts";
 
 interface FilterAnswers {
 	genre?: string;
@@ -61,78 +60,25 @@ async function promptFilters(): Promise<UserFilters> {
 	return ans;
 }
 
-interface Guess {
-    guess: string
-}
-
 async function playRound() {
 	const filters = await promptFilters();
-
-	process.stdout.write(
-		chalk.gray("\nFinding a movie that matches your filters…\n")
-	);
 	const movie = await fetchRandomMovie(filters);
-
-	if (!movie) {
-		console.log(
-			chalk.red(
-				"\nNo results for those filters. Try widening them (e.g., remove rating or expand years)."
-			)
-		);
-		return;
-	}
-
-	const clues = generateClues(movie);
-
-	console.log(
-		chalk.gray("\nOkay! You have 4 clues. Guess the title after each one.\n")
-	);
-	let won = false;
-
-	for (let i = 0; i < clues.length; i++) {
-		console.log(chalk.yellow(`Clue #${i + 1}: `) + clues[i] + "\n");
-		const { guess } = await inquirer.prompt<Guess>([
-			{ type: "input", name: "guess", message: "Your guess (or Enter to skip):" },
-		]);
-
-		if (!guess) {
-			console.log(chalk.gray("Skipping…\n"));
-		} else if (guess.trim().toLowerCase() === movie.title.toLowerCase()) {
-			console.log(chalk.green("\n✅ Correct! Nice work."));
-			won = true;
-			break;
-		} else {
-			console.log(chalk.red("❌ Not it.\n"));
-		}
-
-		if (i < clues.length - 1) await sleep(300);
-	}
-
-	if (!won) {
-		console.log(
-			chalk.redBright(
-				`\n😬 Out of clues! The movie was: ${chalk.bold(movie.title)} (${
-					movie.year ?? "—"
-				})\n`
-			)
-		);
-	}
+	if (!movie) throw new Error("No movies found for those filters!");
+	const session = new GameSession(movie);
+	await session.play();
 }
 
-async function main() {
-	let again = true;
-	while (again) {
-		await playRound();
-		const { cont } = await inquirer.prompt([
-			{
-				type: "confirm",
-				name: "cont",
-				message: "Play again?",
-				default: true,
-			},
-		]);
-		again = cont;
+async function main(): Promise<void> {
+	await playRound();
+	const { cont } = await inquirer.prompt([
+		{ type: "confirm", name: "cont", message: "Play again?", default: true },
+	]);
+
+	if (cont) {
+		// This will recursively call main instead of using a while loop for game play
+		return main();
 	}
+
 	console.log(chalk.cyan("\nThanks for playing!"));
 }
 

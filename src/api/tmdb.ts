@@ -1,7 +1,7 @@
 import axios from "axios";
 import dotenv from "dotenv";
-import { GENRE_NAME_TO_ID } from "../data/genres.js";
-import type { Movie, UserFilters } from "../core/types.js";
+import { GENRE_NAME_TO_ID } from "../data/genres.ts";
+import type { Movie, UserFilters } from "../core/types.ts";
 
 dotenv.config();
 

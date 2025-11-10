@@ -1,5 +1,5 @@
-import type { Movie } from "./types.js";
-import { getDecade, maskTitle, minsFormat } from "./utils.js";
+import type { Movie } from "./types.ts";
+import { getDecade, maskTitle, minsFormat } from "./utils.ts";
 
 export function generateClues(movie: Movie): string[] {
 	const clues: string[] = [];

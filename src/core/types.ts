@@ -16,3 +16,7 @@ export type UserFilters = {
 	maxYear?: number;
 	minRating?: number;
 };
+
+export type Guess = {
+    guess: string;
+}
