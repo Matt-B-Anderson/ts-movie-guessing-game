@@ -38,7 +38,7 @@ export function generateClues(movie: Movie): string[] {
 	// 3) Creator/actors
 	const directorLast = movie.director ? lastName(movie.director) : null;
 	const castHint = movie.topCastInitials?.length
-		? `Top billing: ${movie.topCastInitials!.join(", ")}`
+		? `Top cast initials: ${movie.topCastInitials!.join(", ")}`
 		: null;
 	const c3 = [
 		directorLast
